@@ -1,0 +1,66 @@
+{
+  "version": 3,
+  "targets": {
+    "net7.0": {}
+  },
+  "libraries": {},
+  "projectFileDependencyGroups": {
+    "net7.0": []
+  },
+  "packageFolders": {
+    "/Users/leonardor/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/Users/leonardor/repos/marshallzehr-coding-check/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj",
+      "projectName": "CurrencyConverter",
+      "projectPath": "/Users/leonardor/repos/marshallzehr-coding-check/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj",
+      "packagesPath": "/Users/leonardor/.nuget/packages/",
+      "outputPath": "/Users/leonardor/repos/marshallzehr-coding-check/CurrencyConverter/CurrencyConverter/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/Users/leonardor/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net7.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net7.0": {
+        "targetAlias": "net7.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.311/RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
