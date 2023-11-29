@@ -9,19 +9,21 @@
             _exchangeRateService = exchangeRateService;
         }
 
-        public async Task<ConversionModel> ConvertCurrency(ConversionModel model)
+        public async Task<ConversionResult> ConvertCurrency(ConversionInput model)
         {
-            var conversionDate = model.ConversionDate.HasValue ?
-                model.ConversionDate.Value :
+            var exchangeDate = model.ExchangeDate.HasValue ?
+                model.ExchangeDate.Value :
                 DateTime.Now;
 
             var exchangeRate = await _exchangeRateService.GetExchangeRate(model.CurrencyFrom,
-                model.CurrencyTo, conversionDate);
+                model.CurrencyTo, exchangeDate);
 
-            model.ConvertedValue = model.OriginalValue * exchangeRate;
-            model.ExchangeRate = exchangeRate;
+            var result = ConversionResult.FromInput(model);
 
-            return model;
+            result.ConvertedValue = model.Value * exchangeRate;
+            result.ExchangeRate = exchangeRate;
+
+            return result;
         }
     }
 }
