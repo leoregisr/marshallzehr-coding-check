@@ -45,6 +45,8 @@ namespace CurrencyConverter.Gateways
             try
             {
                 var result = new ExchangeRateResult();
+
+                //reading stream to improve memory using
                 using (var streamReader = new StreamReader(response.Content.ReadAsStream()))
                 using (var jsonTextReader = new JsonTextReader(streamReader))
                 {

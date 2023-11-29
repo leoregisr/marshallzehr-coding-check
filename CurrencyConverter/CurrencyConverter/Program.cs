@@ -11,15 +11,16 @@ class Program
     static async Task Main(string[] args)
     {
         Console.WriteLine("--- Welcome to the Canadian Currency Converter ---");
-
+        
         var converter = GetCurrencyConverter();
 
         while (true)
         {
-            var conversionInput = GetUserInput();
-
             try
             {
+                //get parsed conversion model from user input
+                var conversionInput = GetUserInput();
+
                 var result = await converter.ConvertCurrency(conversionInput);
 
                 OutputResult(result);
@@ -59,6 +60,7 @@ class Program
         var inputModel = new ConversionInput();
 
         var convertedCurrency = GetConvertedCurrency();
+
         var isConvertingToCAD = GetConversionDirection(convertedCurrency);
 
         if (isConvertingToCAD)
@@ -144,7 +146,7 @@ class Program
 
         if (string.IsNullOrEmpty(userInput))
             return GetValueToBeConverted();
-
+        
         if (!decimal.TryParse(userInput, out decimal result))
         {
             Console.WriteLine("The value inserted is not a valid currency value.");
