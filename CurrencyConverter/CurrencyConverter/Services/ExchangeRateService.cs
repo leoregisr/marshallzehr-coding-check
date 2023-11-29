@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text;
+using CurrencyConverter.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 
@@ -35,6 +37,7 @@ namespace CurrencyConverter
 		private readonly HttpClient httpClient;
 
 		private const string ExchangeRatePrefix = "FX";
+        private const string ResultJsonExchangePath = "observations[0]";
 
         public ExchangeRateService()
 		{
@@ -44,13 +47,24 @@ namespace CurrencyConverter
             };
 		}
 
-        public async Task<decimal> GetExchangeRate(CurrencyCode fromCurrencyCode, CurrencyCode toCurrencyCode, DateTime date)
+        public async Task<ExchangeRateResult> GetExchangeRate(CurrencyCode fromCurrencyCode, CurrencyCode toCurrencyCode, DateTime? date)
 		{
 			string exchangeSeries = $"{ExchangeRatePrefix}{fromCurrencyCode}{toCurrencyCode}";
+            ExchangeRateResult result = new ExchangeRateResult();                
 
-			string dateFilter = date.ToString("yyyy-MM-dd");
+            var requestUriBuilder = new StringBuilder($"{exchangeSeries}/json");
 
-			var response = await httpClient.GetAsync($"{exchangeSeries}/json?start_date={dateFilter}&end_date={dateFilter}");
+            if (date.HasValue)
+            {
+                string dateFilter = date.Value.ToString("yyyy-MM-dd");
+                requestUriBuilder.Append($"?start_date={dateFilter}&end_date={dateFilter}");
+            }
+            else
+            {
+                requestUriBuilder.Append("?recent=1");
+            }
+
+			var response = await httpClient.GetAsync(requestUriBuilder.ToString());
 
 			if (response.IsSuccessStatusCode)
 			{
@@ -62,18 +76,25 @@ namespace CurrencyConverter
 						if (jsonTextReader.TokenType == JsonToken.StartObject)
 						{
 							var token = JToken.Load(jsonTextReader);
-							var exchangeRateToken = token.SelectToken($"observations[0].{exchangeSeries}.v");
+
+                            var exchangeDateToken = token.SelectToken($"{ResultJsonExchangePath}.d");
+							var exchangeRateToken = token.SelectToken($"{ResultJsonExchangePath}.{exchangeSeries}.v");
+
+                            if (exchangeDateToken != null)
+                            {
+                                result.Date = exchangeDateToken.ToObject<DateTime>();
+                            }
 
                             if (exchangeRateToken != null)
 							{
-								return exchangeRateToken.ToObject<decimal>();
+                                result.Rate = exchangeRateToken.ToObject<decimal>();
 							}
 						}
                     }
                 }
             }
 
-			return 1;
+			return result;
 		}
 
     }

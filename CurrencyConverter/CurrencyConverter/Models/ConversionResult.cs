@@ -21,8 +21,7 @@ namespace CurrencyConverter
             {
                 OriginalValue = model.Value,
                 CurrencyFrom = model.CurrencyFrom,
-                CurrencyTo = model.CurrencyTo,
-                ExchangeDate = model.ExchangeDate ?? DateTime.Now
+                CurrencyTo = model.CurrencyTo
             };
         }
     }

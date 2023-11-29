@@ -1,8 +1,10 @@
-﻿namespace CurrencyConverter
+﻿using CurrencyConverter.Models;
+
+namespace CurrencyConverter
 {
 	public interface IExchangeRateService
 	{
-        Task<decimal> GetExchangeRate(CurrencyCode fromCurrencyCode, CurrencyCode toCurrencyCode, DateTime date);
+        Task<ExchangeRateResult> GetExchangeRate(CurrencyCode fromCurrencyCode, CurrencyCode toCurrencyCode, DateTime? date);
 	}
 }
 

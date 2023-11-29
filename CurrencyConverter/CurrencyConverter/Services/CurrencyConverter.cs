@@ -11,17 +11,14 @@
 
         public async Task<ConversionResult> ConvertCurrency(ConversionInput model)
         {
-            var exchangeDate = model.ExchangeDate.HasValue ?
-                model.ExchangeDate.Value :
-                DateTime.Now;
-
             var exchangeRate = await _exchangeRateService.GetExchangeRate(model.CurrencyFrom,
-                model.CurrencyTo, exchangeDate);
+                model.CurrencyTo, model.ExchangeDate);
 
             var result = ConversionResult.FromInput(model);
 
-            result.ConvertedValue = model.Value * exchangeRate;
-            result.ExchangeRate = exchangeRate;
+            result.ConvertedValue = model.Value * exchangeRate.Rate;
+            result.ExchangeRate = exchangeRate.Rate;
+            result.ExchangeDate = exchangeRate.Date;
 
             return result;
         }
