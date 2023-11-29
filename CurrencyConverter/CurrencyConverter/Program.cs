@@ -1,4 +1,7 @@
 ﻿using System.Globalization;
+using CurrencyConverter.Exceptions;
+using CurrencyConverter.Gateways;
+using CurrencyConverter.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CurrencyConverter;
@@ -15,16 +18,39 @@ class Program
         {
             var conversionInput = GetUserInput();
 
-            var result = await converter.ConvertCurrency(conversionInput);
+            try
+            {
+                var result = await converter.ConvertCurrency(conversionInput);
 
-            OutputResult(result);
+                OutputResult(result);
 
-            Console.WriteLine("--- Press ESC to exit the application or press any other key to continue ---");
+                Console.WriteLine("--- Press ESC to exit the application or press any other key to continue ---");
 
-            var keyInfo = Console.ReadKey();
+                var keyInfo = Console.ReadKey();
 
-            if (keyInfo.Key == ConsoleKey.Escape)
+                if (keyInfo.Key == ConsoleKey.Escape)
+                    break;
+            }
+            catch (ExchangeApiErrorException apiException)
+            {
+                Console.WriteLine();
+                Console.WriteLine(apiException.Message);
+                Console.WriteLine("Please try again later.");
                 break;
+            }
+            catch (ExchangeRateNotFoundException rateNotFoundException)
+            {
+                Console.WriteLine();
+                Console.WriteLine(rateNotFoundException.Message);
+                Console.WriteLine("Please try again.");
+                continue;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine();                
+                Console.WriteLine("An unexpected error has occurred converting. Please contact the developer.");
+                break;
+            }
         }        
     }
 
@@ -188,11 +214,11 @@ class Program
 
     #region DI
 
-    private static ICurrencyConverter GetCurrencyConverter()
+    private static ICurrencyConverterService GetCurrencyConverter()
     {
         ServiceProvider serviceProvider = BuildServiceProvider();
 
-        ICurrencyConverter? currencyConverter = serviceProvider?.GetService<ICurrencyConverter>();
+        ICurrencyConverterService? currencyConverter = serviceProvider?.GetService<ICurrencyConverterService>();
 
         if (currencyConverter is null)
         {
@@ -205,8 +231,8 @@ class Program
     private static ServiceProvider BuildServiceProvider()
     {
         return new ServiceCollection()
-            .AddSingleton<IExchangeRateService, ExchangeRateService>()
-            .AddSingleton<ICurrencyConverter, CurrencyConverter>()
+            .AddSingleton<IExchangeRateGateway, ExchangeRateServiceGateway>()
+            .AddSingleton<ICurrencyConverterService, CurrencyConverterService>()
             .BuildServiceProvider();
     }
 

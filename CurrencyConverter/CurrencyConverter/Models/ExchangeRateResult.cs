@@ -4,7 +4,7 @@
 	{
 		public ExchangeRateResult()
 		{
-			Rate = 1;//Starts with 1, to be used in case of fail 
+			Rate = 1;//Starts with 1, to be used in case of fail
 		}
 
 		public DateTime Date { get; set; }

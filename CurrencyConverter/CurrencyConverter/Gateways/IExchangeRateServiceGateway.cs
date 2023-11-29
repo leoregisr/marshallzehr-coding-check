@@ -2,7 +2,7 @@
 
 namespace CurrencyConverter
 {
-	public interface IExchangeRateService
+	public interface IExchangeRateGateway
 	{
         Task<ExchangeRateResult> GetExchangeRate(CurrencyCode fromCurrencyCode, CurrencyCode toCurrencyCode, DateTime? date);
 	}

@@ -1,10 +1,12 @@
-﻿namespace CurrencyConverter
-{
-	public class CurrencyConverter : ICurrencyConverter
-	{
-        private readonly IExchangeRateService _exchangeRateService;
+﻿using CurrencyConverter.Services;
 
-        public CurrencyConverter(IExchangeRateService exchangeRateService) 
+namespace CurrencyConverter
+{
+    public class CurrencyConverterService : ICurrencyConverterService
+    {
+        private readonly IExchangeRateGateway _exchangeRateService;
+
+        public CurrencyConverterService(IExchangeRateGateway exchangeRateService) 
 		{
             _exchangeRateService = exchangeRateService;
         }

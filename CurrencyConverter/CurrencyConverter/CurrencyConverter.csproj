@@ -14,9 +14,13 @@
   <ItemGroup>
     <None Remove="Models\" />
     <None Remove="Services\" />
+    <None Remove="Gateways\" />
+    <None Remove="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Services\" />
+    <Folder Include="Gateways\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>
